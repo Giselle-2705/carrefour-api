@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
          https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.carrefour</groupId>
     <artifactId>api-automation</artifactId>
     <version>1.0.0</version>
+    <packaging>jar</packaging>
     <name>Carrefour API Automation</name>
-    <description>Testes automatizados da API Serverest.dev - Desafio Carrefour</description>
-    <url>https://github.com/SEU_USUARIO/api-automation</url>
+    <description>Desafio Carrefour - Testes Automatizados API Serverest.dev</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,38 +18,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <!-- Versões das dependências -->
+        <!-- Versões -->
         <junit.version>5.10.0</junit.version>
-        <restassured.version>5.4.0</restassured.version>
-        <allure.version>2.20.1</allure.version>
-        <jackson.version>2.15.2</jackson.version>
-        <lombok.version>1.18.30</lombok.version>
-
-        <!-- Plugins -->
-        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
-        <maven.surefire.plugin.version>3.1.2</maven.surefire.plugin.version>
-        <maven.surefire.report.plugin.version>3.1.2</maven.surefire.report.plugin.version>
-        <maven.site.plugin.version>3.12.1</maven.site.plugin.version>
-        <allure.maven.plugin.version>2.10.0</allure.maven.plugin.version>
-        <jacoco.version>0.8.10</jacoco.version>
+        <restassured.version>5.3.2</restassured.version>
+        <surefire.version>3.1.2</surefire.version>
     </properties>
 
     <dependencies>
-        <!-- RestAssured - Cliente HTTP para testes -->
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>${restassured.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Jackson - Manipulação de JSON -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
         <!-- JUnit 5 - Framework de testes -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -58,30 +33,23 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Allure JUnit5 integration - Relatórios avançados -->
+        <!-- RestAssured - Cliente HTTP -->
         <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-junit5</artifactId>
-            <version>${allure.version}</version>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${restassured.version}</version>
             <scope>test</scope>
         </dependency>
 
-        <!-- AspectJ - Necessário para Allure -->
+        <!-- JSONPath - Para validar JSON responses -->
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.9.19</version>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>2.7.0</version>
+            <scope>test</scope>
         </dependency>
 
-        <!-- Lombok - Reduz boilerplate (opcional) -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Hamcrest - Assertions adicionais para RestAssured -->
+        <!-- Hamcrest - Matchers para assertions -->
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest</artifactId>
@@ -92,11 +60,11 @@
 
     <build>
         <plugins>
-            <!-- Maven Compiler Plugin - Compilação Java 17 -->
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version>
+                <version>3.11.0</version>
                 <configuration>
                     <source>17</source>
                     <target>17</target>
@@ -104,85 +72,54 @@
                 </configuration>
             </plugin>
 
-            <!-- Maven Surefire Plugin - Executa os testes -->
+            <!-- Maven Surefire Plugin - Executa testes -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surefire.plugin.version}</version>
+                <version>${surefire.version}</version>
                 <configuration>
-                    <!-- Incluir todos os arquivos de teste -->
+                    <!-- Incluir arquivos de teste -->
                     <includes>
                         <include>**/*Test.java</include>
                         <include>**/*Tests.java</include>
-                        <include>**/*IT.java</include>
                     </includes>
 
-                    <!-- Configurações para Allure -->
+                    <!-- Configurações básicas -->
                     <systemPropertyVariables>
-                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
-                        <allure.link.issue.pattern>https://github.com/SEU_USUARIO/api-automation/issues/{}</allure.link.issue.pattern>
-                        <allure.link.tms.pattern>https://github.com/SEU_USUARIO/api-automation/pull/{}</allure.link.tms.pattern>
+                        <java.version>${java.version}</java.version>
                     </systemPropertyVariables>
 
-                    <!-- Argumentos JVM para AspectJ (Allure) -->
-                    <argLine>
-                        -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/1.9.19/aspectjweaver-1.9.19.jar
-                        -Dfile.encoding=UTF-8
-                        -Xmx1024m
-                    </argLine>
-
-                    <!-- Paralelização (opcional) -->
+                    <!-- Execução sequencial -->
                     <parallel>none</parallel>
                     <threadCount>1</threadCount>
 
-                    <!-- Shutdown hook para Allure -->
-                    <useSystemClassLoader>false</useSystemClassLoader>
+                    <!-- Print summary no console -->
+                    <printSummary>true</printSummary>
                 </configuration>
-                <dependencies>
-                    <!-- AspectJ para Allure -->
-                    <dependency>
-                        <groupId>org.aspectj</groupId>
-                        <artifactId>aspectjweaver</artifactId>
-                        <version>1.9.19</version>
-                    </dependency>
-                </dependencies>
             </plugin>
 
-            <!-- Maven Surefire Report Plugin - Gera relatórios HTML -->
+            <!-- Maven Surefire Report Plugin - Relatórios HTML -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>${maven.surefire.report.plugin.version}</version>
+                <version>${surefire.version}</version>
                 <configuration>
                     <outputDirectory>${project.reporting.outputDirectory}/surefire-reports</outputDirectory>
-                    <reportFormat>html</reportFormat>
                 </configuration>
             </plugin>
 
-            <!-- Maven Site Plugin - Gera site do projeto com relatórios -->
+            <!-- Maven Site Plugin - Site do projeto -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>${maven.site.plugin.version}</version>
+                <version>3.12.1</version>
             </plugin>
 
-            <!-- Allure Maven Plugin - Gera relatórios Allure -->
-            <plugin>
-                <groupId>io.qameta.allure</groupId>
-                <artifactId>allure-maven</artifactId>
-                <version>${allure.maven.plugin.version}</version>
-                <configuration>
-                    <reportVersion>${allure.version}</reportVersion>
-                    <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
-                    <reportDirectory>${project.build.directory}/site/allure-maven-plugin</reportDirectory>
-                </configuration>
-            </plugin>
-
-            <!-- JaCoCo Plugin - Cobertura de código -->
+            <!-- JaCoCo - Cobertura de código (opcional) -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
+                <version>0.8.10</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -198,96 +135,7 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
-                </configuration>
-            </plugin>
-
-            <!-- Maven Resources Plugin - Processa recursos -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-
-            <!-- Maven Failsafe Plugin - Testes de integração (opcional) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.1.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <includes>
-                        <include>**/*IT.java</include>
-                        <include>**/*IntegrationTest.java</include>
-                    </includes>
-                </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <!-- Repositórios adicionais (se necessário) -->
-    <repositories>
-        <repository>
-            <id>central</id>
-            <name>Maven Central</name>
-            <url>https://repo1.maven.org/maven2</url>
-        </repository>
-    </repositories>
-
-    <!-- Perfis Maven (desenvolvimento, teste, produção) -->
-    <profiles>
-        <!-- Perfil de Desenvolvimento -->
-        <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <maven.compiler.source>17</maven.compiler.source>
-                <maven.compiler.target>17</maven.compiler.target>
-            </properties>
-        </profile>
-
-        <!-- Perfil de Testes -->
-        <profile>
-            <id>test</id>
-            <properties>
-                <skipTests>false</skipTests>
-                <surefire.skip>false</surefire.skip>
-            </properties>
-        </profile>
-
-        <!-- Perfil de Relatórios -->
-        <profile>
-            <id>reports</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>report</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
