@@ -8,24 +8,17 @@
     <groupId>com.carrefour</groupId>
     <artifactId>api-automation</artifactId>
     <version>1.0.0</version>
-    <packaging>jar</packaging>
-    <name>Carrefour API Automation</name>
-    <description>Desafio Carrefour - Testes Automatizados API Serverest.dev</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <!-- Versões -->
         <junit.version>5.10.0</junit.version>
         <restassured.version>5.3.2</restassured.version>
-        <surefire.version>3.1.2</surefire.version>
     </properties>
 
     <dependencies>
-        <!-- JUnit 5 - Framework de testes -->
+        <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -33,34 +26,18 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- RestAssured - Cliente HTTP -->
+        <!-- RestAssured -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>${restassured.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- JSONPath - Para validar JSON responses -->
-        <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
-            <version>2.7.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Hamcrest - Matchers para assertions -->
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest</artifactId>
-            <version>2.2</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Maven Compiler Plugin -->
+            <!-- Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -68,73 +45,27 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
-                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
 
-            <!-- Maven Surefire Plugin - Executa testes -->
+            <!-- Surefire -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${surefire.version}</version>
+                <version>3.1.2</version>
                 <configuration>
-                    <!-- Incluir arquivos de teste -->
                     <includes>
                         <include>**/*Test.java</include>
                         <include>**/*Tests.java</include>
                     </includes>
-
-                    <!-- Configurações básicas -->
-                    <systemPropertyVariables>
-                        <java.version>${java.version}</java.version>
-                    </systemPropertyVariables>
-
-                    <!-- Execução sequencial -->
-                    <parallel>none</parallel>
-                    <threadCount>1</threadCount>
-
-                    <!-- Print summary no console -->
-                    <printSummary>true</printSummary>
                 </configuration>
             </plugin>
 
-            <!-- Maven Surefire Report Plugin - Relatórios HTML -->
+            <!-- Surefire Report -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>${surefire.version}</version>
-                <configuration>
-                    <outputDirectory>${project.reporting.outputDirectory}/surefire-reports</outputDirectory>
-                </configuration>
-            </plugin>
-
-            <!-- Maven Site Plugin - Site do projeto -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>3.12.1</version>
-            </plugin>
-
-            <!-- JaCoCo - Cobertura de código (opcional) -->
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.10</version>
-                <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <version>3.1.2</version>
             </plugin>
         </plugins>
     </build>
